@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("LightHttpServer Library")]
-[assembly: AssemblyDescription("For more informations visit: https://github.com/rmmlr/LightHttpServer")]
+[assembly: AssemblyDescription("Very simple and lightweight HTTP server implementation.\nFor more informations visit: https://github.com/rmmlr/LightHttpServer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RC-Art Solutions")]
 [assembly: AssemblyProduct("LightHttpServer")]
