@@ -8,11 +8,10 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/rmmlr/LightHttpServer/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/rmmlr/LightHttpServer/</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>See: https://github.com/rmmlr/LightHttpServer/releases</releaseNotes>
+    <releaseNotes>For more informations visit: https://github.com/rmmlr/LightHttpServer/releases</releaseNotes>
     <copyright>Copyright © RC-Art Solutions 2018</copyright>
-    <tags>HTTP Server</tags>
+    <tags>HTTP Server HTTP-request</tags>
   </metadata>
 </package>

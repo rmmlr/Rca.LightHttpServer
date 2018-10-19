@@ -9,7 +9,8 @@ TODO
 
 Download the source from GitHub or get the compiled assembly from NuGet [LightHttpServer on NuGet](https://www.nuget.org/packages/LightHttpServer/).
 
-[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)](https://www.nuget.org/packages/LightHttpServer)
+[![NuGet](https://img.shields.io/nuget/v/LightHttpServer.svg)](https://www.nuget.org/packages/LightHttpServer)
+[![NuGet](https://img.shields.io/nuget/dt/LightHttpServer.svg)](https://www.nuget.org/packages/LightHttpServer/)
 
 ## Releases
 This project build on the continuous integration (CI) platform [AppVeyor](https://www.appveyor.com/) and released in the [Release-Feed](https://github.com/rmmlr/LightHttpServer/releases).
