@@ -9,7 +9,7 @@ TODO
 
 Download the source from GitHub or get the compiled assembly from NuGet [Rca.LightHttpServer on NuGet](https://www.nuget.org/packages/Rca.LightHttpServer/).
 
-[![NuGet](https://img.shields.io/nuget/v/Rca.LightHttpServer.svg)](https://www.nuget.org/packages/Rca.LightHttpServer)
+[![NuGet](https://img.shields.io/nuget/v/Rca.LightHttpServer.svg)](https://www.nuget.org/packages/Rca.LightHttpServer)  
 [![NuGet](https://img.shields.io/nuget/dt/Rca.LightHttpServer.svg)](https://www.nuget.org/packages/Rca.LightHttpServer/)
 
 ## Releases
