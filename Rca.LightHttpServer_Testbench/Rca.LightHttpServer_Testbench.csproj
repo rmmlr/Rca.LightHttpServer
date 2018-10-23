@@ -62,7 +62,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightHttpServer\LightHttpServer.csproj">
+    <ProjectReference Include="..\Rca.LightHttpServer\Rca.LightHttpServer.csproj">
       <Project>{827406d7-7c19-4d0d-96e4-e518944f98e0}</Project>
       <Name>Rca.LightHttpServer</Name>
     </ProjectReference>
