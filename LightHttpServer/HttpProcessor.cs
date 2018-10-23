@@ -2,13 +2,13 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Web;
 
 namespace Rca.LightHttpServer
 {
-
     public class HttpProcessor
     {
         #region Constants
@@ -26,11 +26,21 @@ namespace Rca.LightHttpServer
         public TcpClient Socket { get; set; }
         public HttpServer Srv { get; set; }
         public StreamWriter OutputStream { get; set; }
-        public String HttpMethod { get; set; }
-        public String HttpUrl { get; set; }
-        public String HttpProtocolVersionString { get; set; }
+        public string HttpMethod { get; set; }
+        public string HttpUrl { get; set; }
+        public string HttpProtocolVersionString { get; set; }
         public Hashtable HttpHeaders { get; set; } = new Hashtable();
         public HttpCookieCollection HttpCookies { get; set; }
+        public IPAddress RemoteIP
+        {
+            get
+            {
+                if (Socket.Client.RemoteEndPoint.GetType() == typeof(IPEndPoint))
+                    return ((IPEndPoint)Socket.Client.RemoteEndPoint).Address;
+                else
+                    return IPAddress.None;
+            }
+        }
 
         #endregion Properties
 
@@ -59,17 +69,13 @@ namespace Rca.LightHttpServer
                 ParseRequest();
                 ReadHeaders();
                 if (HttpMethod.Equals("GET"))
-                {
                     HandleGetRequest();
-                }
                 else if (HttpMethod.Equals("POST"))
-                {
                     HandlePostRequest();
-                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception: " + ex.ToString());
+                HttpProcessorErrorEvent(ex);
                 WriteFailure();
             }
 
@@ -79,9 +85,7 @@ namespace Rca.LightHttpServer
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Exception: " + ex.ToString());
-                Console.ResetColor();
+                HttpProcessorErrorEvent(ex);
             }
             finally
             {
@@ -101,19 +105,19 @@ namespace Rca.LightHttpServer
             HttpUrl = tokens[1];
             HttpProtocolVersionString = tokens[2];
 
-            Console.WriteLine("starting: " + request);
+            HttpRequestEvent("starting: " + request);
         }
 
         public void ReadHeaders()
         {
-            Console.WriteLine("readHeaders()");
-            String line;
+            HttpRequestEvent("Started: Reading headers");
+            string line;
 
             while ((line = StreamReadLine(m_InputStream)) != null)
             {
                 if (line.Equals(""))
                 {
-                    Console.WriteLine("got headers");
+                    HttpRequestEvent("Finished: Reading headers");
                     return;
                 }
 
@@ -127,9 +131,7 @@ namespace Rca.LightHttpServer
 
                         var query = cookieLine.Substring(7).Split(';');
                         foreach (string p in query)
-                        {
                             HttpCookies.Add(new HttpCookie(p.Split('=').First(), p.Split('=').Last()));
-                        }
                     }
                     catch (Exception)
                     {
@@ -139,17 +141,15 @@ namespace Rca.LightHttpServer
 
                 int separator = line.IndexOf(':');
                 if (separator == -1)
-                {
                     throw new Exception("invalid http header line: " + line);
-                }
 
                 var name = line.Substring(0, separator);
                 int pos = separator + 1;
                 while ((pos < line.Length) && (line[pos] == ' '))
-                    pos++; // strip any spaces
+                    pos++;
 
                 var value = line.Substring(pos, line.Length - pos);
-                Console.WriteLine("header: {0}:{1}", name, value);
+                HttpRequestEvent(string.Format("header: {0}:{1}", name, value));
                 HttpHeaders[name] = value;
             }
         }
@@ -161,45 +161,38 @@ namespace Rca.LightHttpServer
 
         public void HandlePostRequest()
         {
-            // this post data processing just reads everything into a memory stream.
-            // this is fine for smallish things, but for large stuff we should really
-            // hand an input stream to the request processor. However, the input stream 
-            // we hand him needs to let him see the "end of the stream" at this content 
-            // length, because otherwise he won't know when he's seen it all! 
+            HttpRequestEvent("Started: Get POST data");
+            int contentLength = 0;
+            var memStream = new MemoryStream();
 
-            Console.WriteLine("get post data start");
-            int content_len = 0;
-            var ms = new MemoryStream();
-
-            if (this.HttpHeaders.ContainsKey("Content-Length"))
+            if (HttpHeaders.ContainsKey("Content-Length"))
             {
-                content_len = Convert.ToInt32(this.HttpHeaders["Content-Length"]);
-                if (content_len > MAX_POST_SIZE)
-                    throw new Exception(String.Format("POST Content-Length({0}) too big for this simple server", content_len));
+                contentLength = Convert.ToInt32(this.HttpHeaders["Content-Length"]);
+                if (contentLength > MAX_POST_SIZE)
+                    throw new Exception(String.Format("POST Content-Length({0}) to large for this server", contentLength));
 
                 byte[] buf = new byte[BUF_SIZE];
-                int to_read = content_len;
-                while (to_read > 0)
+                int toRead = contentLength;
+                while (toRead > 0)
                 {
-                    Console.WriteLine("starting Read, to_read={0}", to_read);
+                    HttpRequestEvent("starting Read, toRead=" + toRead);
 
-                    int numread = this.m_InputStream.Read(buf, 0, Math.Min(BUF_SIZE, to_read));
-                    Console.WriteLine("read finished, numread={0}", numread);
-                    if (numread == 0)
+                    int numRead = this.m_InputStream.Read(buf, 0, Math.Min(BUF_SIZE, toRead));
+                    HttpRequestEvent("read finished, numread=" + numRead);
+                    if (numRead == 0)
                     {
-                        if (to_read == 0)
+                        if (toRead == 0)
                             break;
                         else
                             throw new Exception("client disconnected during post");
                     }
-                    to_read -= numread;
-                    ms.Write(buf, 0, numread);
+                    toRead -= numRead;
+                    memStream.Write(buf, 0, numRead);
                 }
-                ms.Seek(0, SeekOrigin.Begin);
+                memStream.Seek(0, SeekOrigin.Begin);
             }
-            Console.WriteLine("get post data end");
-            Srv.HandlePostRequest(this, new StreamReader(ms));
-
+            HttpRequestEvent("Finished: Get POST data");
+            Srv.HandlePostRequest(this, new StreamReader(memStream));
         }
 
         public void WriteSuccess()
@@ -251,25 +244,47 @@ namespace Rca.LightHttpServer
         #region Internal services
         private string StreamReadLine(Stream inputStream)
         {
-            int next_char;
+            int nextChar;
             string data = "";
-            while (true)
+            while (true) //loop
             {
-                next_char = inputStream.ReadByte();
-                if (next_char == '\n')
+                nextChar = inputStream.ReadByte();
+                if (nextChar == '\n')
                     break;
-                if (next_char == '\r')
+                if (nextChar == '\r')
                     continue;
-                if (next_char == -1)
+                if (nextChar == -1)
                 {
                     Thread.Sleep(1);
                     continue;
                 };
-                data += Convert.ToChar(next_char);
+                data += Convert.ToChar(nextChar);
             }
             return data;
         }
 
         #endregion Internal services
+
+        #region Events
+
+        protected void HttpRequestEvent(string message)
+        {
+            var e = new HttpRequestEventArgs(message);
+            HttpRequest?.Invoke(null, e);
+        }
+        public event HttpRequestEventHandler HttpRequest;
+
+
+        protected void HttpProcessorErrorEvent(Exception ex, string message = null)
+        {
+            var e = new HttpProcessorErrorEventArgs(ex, message);
+            HttpProcessorError?.Invoke(null, e);
+        }
+        public event HttpProcessorErrorEventHandler HttpProcessorError;
+
+        #endregion Events
     }
+
+    public delegate void HttpRequestEventHandler(object sender, HttpRequestEventArgs e);
+    public delegate void HttpProcessorErrorEventHandler(object sender, HttpProcessorErrorEventArgs e);
 }
