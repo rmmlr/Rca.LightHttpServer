@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Rca.LightHttpServer</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
@@ -12,6 +12,13 @@
     <description>$description$</description>
     <releaseNotes>For more informations visit: https://github.com/rmmlr/LightHttpServer/releases</releaseNotes>
     <copyright>Copyright © RC-Art Solutions 2018</copyright>
-    <tags>HTTP Server HTTP-request</tags>
+    <tags>http server http-request http-server</tags>
   </metadata>
+  <files>
+    <file src="LightHttpServer\bin\Release\LightHttpServer.dll" target="lib\net45\" />
+    <file src="LightHttpServer\bin\Release\LightHttpServer.xml" target="lib\net45\" />
+    <file src="LightHttpServer\bin\Release\LightHttpServer.pdb" target="lib\net45\" />
+
+    <file src="**\*.cs" target="src" />
+  </files>
 </package>
