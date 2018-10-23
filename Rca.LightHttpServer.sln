@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightHttpServer", "LightHttpServer\LightHttpServer.csproj", "{827406D7-7C19-4D0D-96E4-E518944F98E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rca.LightHttpServer", "Rca.LightHttpServer\Rca.LightHttpServer.csproj", "{827406D7-7C19-4D0D-96E4-E518944F98E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightHttpServer_Testbench", "LightHttpServer_Testbench\LightHttpServer_Testbench.csproj", "{CBA557D4-48E6-4383-8388-A87CB5901912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rca.LightHttpServer_Testbench", "Rca.LightHttpServer_Testbench\Rca.LightHttpServer_Testbench.csproj", "{CBA557D4-48E6-4383-8388-A87CB5901912}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
