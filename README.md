@@ -15,8 +15,8 @@ Download the source from GitHub or get the compiled assembly from NuGet [Rca.Lig
 ## Releases
 This project build on the continuous integration (CI) platform [AppVeyor](https://www.appveyor.com/) and released in the [Release-Feed](https://github.com/rmmlr/Rca.LightHttpServer/releases).
 
-[![AppVeyor Build](https://img.shields.io/appveyor/ci/rmmlr/rca.lighthttpserver.svg)](https://ci.appveyor.com/project/rmmlr/lighthttpserver)  
-[![AppVeyor Tests](https://img.shields.io/appveyor/tests/rmmlr/Rca.LightHttpServer/master.svg)](https://ci.appveyor.com/project/rmmlr/LightHttpServer/build/tests)
+[![AppVeyor Build](https://img.shields.io/appveyor/ci/rmmlr/lighthttpserver.svg)](https://ci.appveyor.com/project/rmmlr/lighthttpserver)  
+[![AppVeyor Tests](https://img.shields.io/appveyor/tests/rmmlr/LightHttpServer/master.svg)](https://ci.appveyor.com/project/rmmlr/LightHttpServer/build/tests)
 
 [![GitHub Release](https://img.shields.io/github/release/rmmlr/rca.lighthttpserver.svg)](https://github.com/rmmlr/rca.lighthttpserver/releases/latest)  
 [![GitHub (Pre-)Release](https://img.shields.io/github/release/rmmlr/rca.lighthttpserver/all.svg)](https://github.com/rmmlr/rca.lighthttpserver/releases) (Pre-)Release
