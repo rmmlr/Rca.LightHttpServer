@@ -6,11 +6,11 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://github.com/rmmlr/LightHttpServer/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/rmmlr/LightHttpServer/</projectUrl>
+    <licenseUrl>https://github.com/rmmlr/Rca.LightHttpServer/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/rmmlr/Rca.LightHttpServer/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>For more informations visit: https://github.com/rmmlr/LightHttpServer/releases</releaseNotes>
+    <releaseNotes>For more informations visit: https://github.com/rmmlr/Rca.LightHttpServer/releases</releaseNotes>
     <copyright>Copyright © RC-Art Solutions 2018</copyright>
     <tags>http server http-request http-server</tags>
   </metadata>
